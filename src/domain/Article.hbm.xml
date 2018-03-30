@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="domain">
+	<class name="Article" table="blog_article">
+		<id name="article_id">
+			<generator class="native"></generator>
+		</id>
+		<property name="title"></property>
+		<property name="summary"></property>
+		<property name="read_count"></property>
+		<property name="comment_count"></property>
+		<property name="up_count"></property>
+		<property name="create_time"></property>
+		<property name="article_detail"></property>
+		<many-to-one name="article_type" column="article_type_id" class="Articletype"></many-to-one>
+		<many-to-one name="author" column="article_author_id" class="User"></many-to-one>
+	</class>
+</hibernate-mapping>

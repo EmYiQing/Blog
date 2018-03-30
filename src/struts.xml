@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.multipart.maxSize" value="31457280"></constant>
+	<constant name="struts.objectFactory" value="spring"></constant>
+
+	<package name="Blog" namespace="/" extends="struts-default">
+		<interceptors>
+			<interceptor name="privilegeInterceptor" class="web.interceptor.PrivilegeInterceptor"></interceptor>
+			<interceptor-stack name="myStack">
+				<interceptor-ref name="privilegeInterceptor">
+					<param name="excludeMethods">login,regist,createRandom,execute</param>
+				</interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="myStack"></default-interceptor-ref>
+		<global-results>
+			<result name="toHome" type="redirect">/IndexAction_articleTypeList
+			</result>
+			<result name="toLogin" type="redirect">/login.jsp</result>
+		</global-results>
+
+		<!-- 整合:class属性上填写spring中action对象的BeanName 完全由spring管理action生命周期,包括Action的创建 -->
+		<action name="UserAction_*" class="userAction" method="{1}">
+			<exception-mapping result="loginError"
+				exception="java.lang.RuntimeException"></exception-mapping>
+			<result name="loginError">/login.jsp</result>
+			<result name="regist">/register.jsp</result>
+		</action>
+		<action name="RegistAction_*" class="registAction" method="{1}">
+			<exception-mapping result="registError"
+				exception="java.lang.RuntimeException"></exception-mapping>
+			<result name="registError">/register.jsp</result>
+		</action>
+		<action name="IndexAction_*" class="indexAction" method="{1}">
+			<result name="list">/home.jsp</result>
+			<result name="catagoryList">/home.jsp</result>
+		</action>
+		<action name="ArticleAction_*" class="articleAction" method="{1}">
+			<result name="toDetail">/article_detail.jsp</result>
+			<result name="write">/index.jsp</result>
+			<result name="manage">/article_manage.jsp</result>
+			<result name="edit">/edit.jsp</result>
+		</action>
+		<action name="CheckImgAction" class="web.action.CheckImgAction">
+			<result name="success" type="stream">
+				<param name="contentType">image/jpeg</param>
+				<param name="inputName">inputStream</param>
+			</result>
+		</action>
+		<action name="UploadAction_*" class="uploadAction" method="{1}">
+            <result name="success">/index.jsp</result>
+               <interceptor-ref name="defaultStack">
+                   <param name="fileUpload.allowedExtensions">jepg,jpg,gif,png</param>
+               </interceptor-ref> 
+            <result name="input">/index.jsp</result>
+		</action>
+	</package>
+
+	<package name="article" extends="json-default">
+		<action name="OthersAction_*" class="othersAction" method="{1}">
+			<result name="good" type="json"></result>
+			<result name="reply" type="json"></result>
+			<result name="delete" type="json"></result>
+		</action>
+	</package>
+</struts>
+	
