@@ -1,2 +1,4 @@
-# Blog
-This is a BBS made from the Java SSH(Spring4,Struts2,Hibernate5) framework, which is basically complete. The new work, the shortcomings please teach.
+# 博客系统
+- 刚开始学Java时候写的项目
+- 使用SSH框架
+- 前端使用Bootstrap框架
